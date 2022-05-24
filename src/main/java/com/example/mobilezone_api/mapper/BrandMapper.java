@@ -21,6 +21,5 @@ public interface BrandMapper {
     }
 
     @InheritInverseConfiguration
-    @Mapping(target = "products", ignore = true)
     Brand mapDTOToBrand (BrandDTO brandDTO);
 }

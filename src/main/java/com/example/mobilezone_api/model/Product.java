@@ -5,7 +5,9 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
-import java.util.Date;
+import java.time.Instant;
+import java.util.Optional;
+import java.util.Set;
 
 @Data
 @NoArgsConstructor
@@ -28,7 +30,7 @@ public class Product {
     private Double priceOut;
 
     @Column(name = "Discount")
-    private Long discount;
+    private Integer discount;
 
     @Column(name = "Images")
     private String images;
@@ -44,8 +46,15 @@ public class Product {
     @JoinColumn(name = "BrandId", referencedColumnName = "BrandId")
     private Brand brand;
 
+    @ManyToMany(cascade = CascadeType.ALL)
+    @JoinTable(name = "Product_Color",
+            // 2 cột của bảng trung gian
+            joinColumns = @JoinColumn(name = "ProductId"),
+            inverseJoinColumns = @JoinColumn(name = "ColorId"))
+    private Set<Color> colors;
+
     @Column(name = "CreateDate")
-    private Date createDate;
+    private Instant createDate;
 
     @Column(name = "Quantity")
     private Long quantity;
@@ -55,4 +64,6 @@ public class Product {
 
     @Column(name = "Status")
     private Boolean status;
+
+
 }
