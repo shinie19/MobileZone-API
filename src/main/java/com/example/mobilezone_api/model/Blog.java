@@ -6,6 +6,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import java.time.Instant;
 import java.util.List;
 
 @Data
@@ -22,16 +23,26 @@ public class Blog {
     @Column(name = "BlogTitle")
     private String blogTitle;
 
-    @Column(name = "Logo")
-    private String logo;
+    @ManyToOne()
+    @JoinColumn(name = "CategoryId", referencedColumnName = "CategoryId")
+    private Category category;
+
+    @Column(name = "BlogContent")
+    private String content;
+
+    @ManyToOne()
+    @JoinColumn(name = "UserId", referencedColumnName = "UserId")
+    private User user;
 
     @Column(name = "Description")
     private String description;
 
+    @Column(name = "FeatureImg")
+    private String featureImage;
+
+    @Column(name = "CreateDate")
+    private Instant createDate;
+
     @Column(name = "Status")
     private Boolean status;
-
-    @OneToMany(mappedBy = "brand", fetch = FetchType.EAGER)
-    @JsonIgnore
-    private List<Product> products;
 }

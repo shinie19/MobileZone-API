@@ -13,40 +13,38 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-@Table(name = "Users")
-public class User {
+@Table(name = "Orders")
+public class Order {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "UserId")
-    private Long userId;
+    @Column(name = "OrderId")
+    private Long orderId;
 
-    @Column(name = "Email")
-    private String email;
-
-    @Column(name = "Password")
-    private String password;
+    @ManyToOne()
+    @JoinColumn(name = "UserId", referencedColumnName = "UserId")
+    private User user;
 
     @Column(name = "FullName")
     private String fullName;
 
+    @Column(name = "Email")
+    private String email;
+
     @Column(name = "Phone")
     private String phone;
 
-    @Column(name = "Avatar")
-    private String avatar;
+    @Column(name = "Address")
+    private String address;
 
-    @Column(name = "IsAdmin")
-    private Boolean isAdmin;
-
-    @Column(name = "CodeConfirm")
-    private String codeConfirm;
+    @Column(name = "Total")
+    private Double total;
 
     @Column(name = "CreateDate")
     private Instant createDate;
 
-    @OneToMany(mappedBy = "user", fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "order", fetch = FetchType.LAZY)
     @JsonIgnore
-    private List<Order> orders;
+    private List<OrderDetail> orderDetails;
 
     @Column(name = "Status")
     private Boolean status;

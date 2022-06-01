@@ -1,10 +1,12 @@
 package com.example.mobilezone_api.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import java.util.List;
 import java.util.Set;
 
 @Data
@@ -26,5 +28,9 @@ public class Color {
 
     @ManyToMany(mappedBy = "colors")
     private Set<Product> products;
+
+    @OneToMany(mappedBy = "color", fetch = FetchType.LAZY)
+    @JsonIgnore
+    private List<OrderDetail> orderDetails;
 
 }

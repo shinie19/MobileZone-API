@@ -49,4 +49,8 @@ public class Category {
     @OneToMany(mappedBy = "category", fetch = FetchType.EAGER)
     @JsonIgnore
     private List<Product> products;
+
+    @OneToMany(mappedBy = "category", fetch = FetchType.LAZY)
+    @JsonIgnore
+    private List<Blog> blogs;
 }

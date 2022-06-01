@@ -64,7 +64,9 @@ public class AuthService {
                 loginRequest.getPassword()));
         SecurityContextHolder.getContext().setAuthentication(authenticate);
         String authenticationToken = jwtProvider.generateToken(authenticate);
-        return new AuthenticationResponse(authenticationToken, loginRequest.getEmail());
+
+        User user = userRepository.findByEmail(loginRequest.getEmail()).orElseThrow(() -> new RuntimeException("Email not found!"));
+        return new AuthenticationResponse(authenticationToken, loginRequest.getEmail(), user.getIsAdmin());
     }
 
     private String generateVerificationToken(User user) {

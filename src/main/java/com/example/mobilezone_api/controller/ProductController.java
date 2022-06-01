@@ -1,6 +1,6 @@
 package com.example.mobilezone_api.controller;
 
-import com.example.mobilezone_api.dto.ProductRequest;
+import com.example.mobilezone_api.dto.ProductDTO;
 import com.example.mobilezone_api.model.Product;
 import com.example.mobilezone_api.service.ProductService;
 import lombok.AllArgsConstructor;
@@ -15,7 +15,7 @@ public class ProductController {
     private final ProductService productService;
 
     @GetMapping
-    public List<Product> getAll() {
+    public List<ProductDTO> getAll() {
         return productService.getAll();
     }
 
@@ -25,8 +25,8 @@ public class ProductController {
     }
 
     @PostMapping
-    public Product create(@RequestBody ProductRequest productRequest) {
-        return productService.save(productRequest);
+    public Product create(@RequestBody ProductDTO productDTO) {
+        return productService.save(productDTO);
     }
 
     @GetMapping("/delete/{id}")
