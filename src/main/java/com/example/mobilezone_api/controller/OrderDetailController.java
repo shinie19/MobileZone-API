@@ -1,7 +1,6 @@
 package com.example.mobilezone_api.controller;
 
 import com.example.mobilezone_api.dto.OrderDetailDTO;
-import com.example.mobilezone_api.model.OrderDetail;
 import com.example.mobilezone_api.service.OrderDetailService;
 import lombok.AllArgsConstructor;
 import org.springframework.web.bind.annotation.*;

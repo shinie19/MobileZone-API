@@ -17,17 +17,17 @@ public class OrderController {
     private final OrderService orderService;
 
     @GetMapping
-    public List<Order> getAll() {
+    public List<OrderDTO> getAll() {
         return orderService.getAll();
     }
 
     @GetMapping("/{id}")
-    public Order getOrder(@PathVariable Long id) {
+    public OrderDTO getOrder(@PathVariable Long id) {
         return orderService.getOrder(id);
     }
 
     @PostMapping
-    public Order create(@RequestBody OrderDTO orderDTO) {
+    public OrderDTO create(@RequestBody OrderDTO orderDTO) {
         return orderService.save(orderDTO);
     }
 
