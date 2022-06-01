@@ -4,6 +4,7 @@ import com.example.mobilezone_api.dto.ProductDTO;
 import com.example.mobilezone_api.model.Color;
 import com.example.mobilezone_api.model.OrderDetail;
 import com.example.mobilezone_api.model.Product;
+import org.mapstruct.InheritInverseConfiguration;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 
@@ -36,4 +37,7 @@ public interface ProductMapper {
         }
         return orderDetailIds;
     }
+
+    @InheritInverseConfiguration
+    Product mapDTOToProduct(ProductDTO productDTO);
 }

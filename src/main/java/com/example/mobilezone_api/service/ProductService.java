@@ -37,35 +37,42 @@ public class ProductService {
     }
 
     @Transactional
-    public Product save(ProductDTO productDTO) {
-        Product product = new Product();
-        product.setProductName(productDTO.getProductName());
-        product.setPriceIn(productDTO.getPriceIn());
-        product.setPriceOut(productDTO.getPriceOut());
-        product.setDiscount(productDTO.getDiscount());
-        product.setImages(productDTO.getImages());
-        product.setDescription(productDTO.getDescription());
-        product.setBrand(brandRepository.findById(productDTO.getBrandId())
-                .orElseThrow(() -> new ProductNotFoundException("Brand id not found!")));
+    public ProductDTO save(ProductDTO productDTO) {
+//        Product product = new Product();
+//        product.setProductName(productDTO.getProductName());
+//        product.setPriceIn(productDTO.getPriceIn());
+//        product.setPriceOut(productDTO.getPriceOut());
+//        product.setDiscount(productDTO.getDiscount());
+//        product.setImages(productDTO.getImages());
+//        product.setDescription(productDTO.getDescription());
+//        product.setBrand(brandRepository.findById(productDTO.getBrandId())
+//                .orElseThrow(() -> new ProductNotFoundException("Brand id not found!")));
+//
+//        Set<Color> colors = new HashSet<>();
+//        for (Iterator<Long> it = productDTO.getColorIds().iterator(); it.hasNext(); ) {
+//            Long id = it.next();
+//            colors.add(colorRepository.findById(id).orElseThrow(() -> new ColorNotFoundException("Color not found!")));
+//        }
+//        product.setColors(colors);
+//        product.setCreateDate(Instant.now());
+//        product.setStatus(Boolean.TRUE);
+//
+//        return productRepository.save(product);
 
-        Set<Color> colors = new HashSet<>();
-        for (Iterator<Long> it = productDTO.getColorIds().iterator(); it.hasNext(); ) {
-            Long id = it.next();
-            colors.add(colorRepository.findById(id).orElseThrow(() -> new ColorNotFoundException("Color not found!")));
-        }
-        product.setColors(colors);
-        product.setCreateDate(Instant.now());
-        product.setStatus(Boolean.TRUE);
+        Product product = productMapper.mapDTOToProduct(productDTO);
 
-        return productRepository.save(product);
+        Product productSaved = productRepository.save(product);
+        productDTO.setProductId(productSaved.getProductId());
+
+        return productDTO;
     }
 
     @Transactional
-    public Product getProduct(Long id) {
+    public ProductDTO getProduct(Long id) {
         Product product = productRepository.findById(id)
                 .orElseThrow(() -> new ProductNotFoundException("Product not found with id -" + id));
 
-        return product;
+        return productMapper.mapProductToDTO(product);
     }
 
     @Transactional
