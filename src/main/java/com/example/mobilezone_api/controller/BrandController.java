@@ -5,11 +5,11 @@ import com.example.mobilezone_api.service.BrandService;
 import lombok.AllArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
-import javax.validation.Valid;
 import java.util.List;
 
 @RestController
 @RequestMapping("/api/brand")
+@CrossOrigin
 @AllArgsConstructor
 public class BrandController {
     private final BrandService brandService;
