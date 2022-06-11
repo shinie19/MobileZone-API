@@ -36,6 +36,30 @@ public class ProductService {
                 .collect(Collectors.toList());
     }
 
+    @Transactional(readOnly = true)
+    public List<ProductDTO> getNewArrivals() {
+        return productRepository.findAllByOrderByProductIdDesc()
+                .stream()
+                .map(productMapper::mapProductToDTO)
+                .collect(Collectors.toList());
+    }
+
+    @Transactional(readOnly = true)
+    public List<ProductDTO> getFeaturedProducts() {
+        return productRepository.findAllByOrderByPriceOutDesc()
+                .stream()
+                .map(productMapper::mapProductToDTO)
+                .collect(Collectors.toList());
+    }
+
+    @Transactional(readOnly = true)
+    public List<ProductDTO> getBestSellerProducts() {
+        return productRepository.findAllByOrderByCountBuyDesc()
+                .stream()
+                .map(productMapper::mapProductToDTO)
+                .collect(Collectors.toList());
+    }
+
     @Transactional
     public ProductDTO save(ProductDTO productDTO) {
 //        Product product = new Product();
@@ -73,6 +97,14 @@ public class ProductService {
                 .orElseThrow(() -> new ProductNotFoundException("Product not found with id -" + id));
 
         return productMapper.mapProductToDTO(product);
+    }
+
+    @Transactional
+    public List<ProductDTO> getByBrand(Long id) {
+        return productRepository.findAllByBrandBrandId(id)
+                .stream()
+                .map(productMapper::mapProductToDTO)
+                .collect(Collectors.toList());
     }
 
     @Transactional

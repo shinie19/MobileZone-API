@@ -27,7 +27,7 @@ public class Color {
     private Double bonusPrice;
 
     @ManyToMany(mappedBy = "colors")
-    private Set<Product> products;
+    private List<Product> products;
 
     @OneToMany(mappedBy = "color", fetch = FetchType.LAZY)
     @JsonIgnore
