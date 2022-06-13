@@ -44,22 +44,16 @@ public class OrderDetailService {
 
     @Transactional
     public OrderDetailDTO save(OrderDetailDTO orderDetailDTO) {
-//        OrderDetail orderDetail = new OrderDetail();
-//
-//        orderDetail.setOrder(orderRepository.findById(orderDetailDTO.getOrderId())
-//                .orElseThrow(() -> new OrderDetailNotFoundException("Order Detail not found with id -" + orderDetailDTO.getOrderId())));
-//        orderDetail.setProduct(productRepository.findById(orderDetailDTO.getProductId())
-//                .orElseThrow(() -> new ProductNotFoundException("Product not found with id -" + orderDetailDTO.getProductId())));
-//        orderDetail.setColor(colorRepository.findById(orderDetailDTO.getColorId())
-//                .orElseThrow(() -> new ColorNotFoundException("Color not found with id -" + orderDetailDTO.getColorId())));
-//        orderDetail.setQuantity(orderDetailDTO.getQuantity());
-//        orderDetail.setPrice(orderDetailDTO.getPrice());
-//
-//        orderDetailRepository.save(orderDetail);
-//
-//        return orderDetail;
 
         OrderDetail orderDetail = orderDetailMapper.mapDTOToModel(orderDetailDTO);
+
+        orderDetail.setOrder(orderRepository.findById(orderDetailDTO.getOrderId())
+                .orElseThrow(() -> new RuntimeException("Not found with order id-" + orderDetailDTO.getOrderId())));
+        orderDetail.setProduct(productRepository.findById(orderDetailDTO.getProductId())
+                .orElseThrow(() -> new RuntimeException("Not found with product id-" + orderDetailDTO.getProductId())));
+        orderDetail.setColor(colorRepository.findById(orderDetailDTO.getColorId())
+                .orElseThrow(() -> new RuntimeException("Not found with color id-" + orderDetailDTO.getColorId())));
+
         OrderDetail orderDetailSaved = orderDetailRepository.save(orderDetail);
         orderDetailDTO.setOrderDetailId(orderDetailSaved.getOrderDetailId());
 

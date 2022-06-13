@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
+@CrossOrigin
 @RequestMapping("/api/order")
 @AllArgsConstructor
 public class OrderController {
@@ -24,6 +25,11 @@ public class OrderController {
     @GetMapping("/{id}")
     public OrderDTO getOrder(@PathVariable Long id) {
         return orderService.getOrder(id);
+    }
+
+    @PutMapping("/{id}")
+    public OrderDTO updateOrder(@PathVariable Long id, @RequestBody OrderDTO orderDTO) {
+        return orderService.updateOrder(id, orderDTO);
     }
 
     @PostMapping

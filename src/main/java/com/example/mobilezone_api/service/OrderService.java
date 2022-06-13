@@ -8,6 +8,7 @@ import com.example.mobilezone_api.model.Order;
 import com.example.mobilezone_api.model.OrderDetail;
 import com.example.mobilezone_api.repository.OrderDetailRepository;
 import com.example.mobilezone_api.repository.OrderRepository;
+import com.example.mobilezone_api.repository.UserRepository;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -21,8 +22,7 @@ import java.util.stream.Collectors;
 @AllArgsConstructor
 public class OrderService {
     private final OrderRepository orderRepository;
-    private final OrderDetailRepository orderDetailRepository;
-    private final AuthService authService;
+    private final UserRepository userRepository;
     private final OrderMapper orderMapper;
 
     @Transactional(readOnly = true)
@@ -43,30 +43,33 @@ public class OrderService {
 
     @Transactional
     public OrderDTO save(OrderDTO orderDTO) {
-//        Order order = new Order();
-//
-//        order.setUser(authService.getCurrentUser());
-//        order.setFullName(orderDTO.getFullName());
-//        order.setEmail(orderDTO.getEmail());
-//        order.setPhone(orderDTO.getPhone());
-//        order.setAddress(orderDTO.getAddress());
-//        order.setTotal(orderDTO.getTotal());
-//
-//        List<OrderDetail> orderDetails = new ArrayList<>();
-//        for (Long id: orderDTO.getOrderDetailIds()) {
-//            orderDetails.add(orderDetailRepository.findById(id).
-//                    orElseThrow(() -> new OrderDetailNotFoundException("Order Detail not found with id -" + id)));
-//        }
-//
-//        order.setOrderDetails(orderDetails);
-//        order.setCreateDate(Instant.now());
-//        order.setStatus(Boolean.TRUE);
-//
-//        orderRepository.save(order);
-//
-//        return order;
-
         Order order = orderMapper.mapDTOToOrder(orderDTO);
+        order.setUser(userRepository.findById(orderDTO.getUserId())
+                .orElseThrow(() -> new RuntimeException("Not found with user id-" + orderDTO.getUserId())));
+        order.setCreateDate(Instant.now());
+        order.setStatus(Boolean.FALSE);
+        Order orderSaved = orderRepository.save(order);
+
+        orderDTO.setOrderId(orderSaved.getOrderId());
+        orderDTO.setCreateDate(orderSaved.getCreateDate());
+        orderDTO.setStatus(orderSaved.getStatus());
+        return orderDTO;
+    }
+
+    @Transactional
+    public OrderDTO updateOrder(Long id, OrderDTO orderDTO) {
+        Order order = orderRepository.findById(id)
+                .orElseThrow(() -> new OrderNotFoundException("Order not found with id -" + id));
+
+        order.setUser(userRepository.findById(orderDTO.getUserId())
+                .orElseThrow(() -> new RuntimeException("User not found with id -" + orderDTO.getUserId())));
+        order.setFullName(orderDTO.getFullName());
+        order.setEmail(orderDTO.getEmail());
+        order.setPhone(orderDTO.getPhone());
+        order.setAddress(orderDTO.getAddress());
+        order.setTotal(orderDTO.getTotal());
+        order.setStatus(orderDTO.getStatus());
+
         Order orderSaved = orderRepository.save(order);
 
         orderDTO.setOrderId(orderSaved.getOrderId());

@@ -3,9 +3,11 @@ package com.example.mobilezone_api.mapper;
 import com.example.mobilezone_api.dto.OrderDTO;
 import com.example.mobilezone_api.model.Order;
 import com.example.mobilezone_api.model.OrderDetail;
+import com.example.mobilezone_api.repository.UserRepository;
 import org.mapstruct.InheritInverseConfiguration;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.ArrayList;
 import java.util.List;
