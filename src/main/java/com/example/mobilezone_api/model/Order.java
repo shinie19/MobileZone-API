@@ -42,7 +42,7 @@ public class Order {
     private Instant createDate;
 
     @OneToMany(mappedBy = "order", fetch = FetchType.LAZY)
-    @JsonIgnore
+//    @JsonIgnore
     private List<OrderDetail> orderDetails;
 
     @Column(name = "Status")

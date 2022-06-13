@@ -18,17 +18,17 @@ public class OrderController {
     private final OrderService orderService;
 
     @GetMapping
-    public List<OrderDTO> getAll() {
+    public List<Order> getAll() {
         return orderService.getAll();
     }
 
     @GetMapping("/{id}")
-    public OrderDTO getOrder(@PathVariable Long id) {
+    public Order getOrder(@PathVariable Long id) {
         return orderService.getOrder(id);
     }
 
     @PutMapping("/{id}")
-    public OrderDTO updateOrder(@PathVariable Long id, @RequestBody OrderDTO orderDTO) {
+    public Order updateOrder(@PathVariable Long id, @RequestBody OrderDTO orderDTO) {
         return orderService.updateOrder(id, orderDTO);
     }
 

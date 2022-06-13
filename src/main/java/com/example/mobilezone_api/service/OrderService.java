@@ -26,19 +26,16 @@ public class OrderService {
     private final OrderMapper orderMapper;
 
     @Transactional(readOnly = true)
-    public List<OrderDTO> getAll() {
-        return orderRepository.findAll()
-                .stream()
-                .map(orderMapper::mapOrderToDTO)
-                .collect(Collectors.toList());
+    public List<Order> getAll() {
+        return orderRepository.findAll();
     }
 
     @Transactional
-    public OrderDTO getOrder(Long id) {
+    public Order getOrder(Long id) {
         Order order = orderRepository.findById(id)
                 .orElseThrow(() -> new OrderNotFoundException("Order not found with id -" + id));
 
-        return orderMapper.mapOrderToDTO(order);
+        return order;
     }
 
     @Transactional
@@ -57,23 +54,23 @@ public class OrderService {
     }
 
     @Transactional
-    public OrderDTO updateOrder(Long id, OrderDTO orderDTO) {
+    public Order updateOrder(Long id, OrderDTO orderDTO) {
         Order order = orderRepository.findById(id)
                 .orElseThrow(() -> new OrderNotFoundException("Order not found with id -" + id));
 
-        order.setUser(userRepository.findById(orderDTO.getUserId())
-                .orElseThrow(() -> new RuntimeException("User not found with id -" + orderDTO.getUserId())));
-        order.setFullName(orderDTO.getFullName());
-        order.setEmail(orderDTO.getEmail());
-        order.setPhone(orderDTO.getPhone());
-        order.setAddress(orderDTO.getAddress());
-        order.setTotal(orderDTO.getTotal());
-        order.setStatus(orderDTO.getStatus());
+        if (orderDTO.getUserId() != null) {
+            order.setUser(userRepository.findById(orderDTO.getUserId())
+                    .orElseThrow(() -> new RuntimeException("User not found with id -" + orderDTO.getUserId())));
+        }
 
-        Order orderSaved = orderRepository.save(order);
+        if (orderDTO.getFullName() != null) order.setFullName(orderDTO.getFullName());
+        if (orderDTO.getEmail() != null) order.setEmail(orderDTO.getEmail());
+        if (orderDTO.getPhone() != null) order.setPhone(orderDTO.getPhone());
+        if (orderDTO.getAddress() != null) order.setAddress(orderDTO.getAddress());
+        if (orderDTO.getTotal() != null) order.setTotal(orderDTO.getTotal());
+        if (orderDTO.getStatus() != null) order.setStatus(orderDTO.getStatus());
 
-        orderDTO.setOrderId(orderSaved.getOrderId());
-        return orderDTO;
+        return orderRepository.save(order);
     }
 
     @Transactional
