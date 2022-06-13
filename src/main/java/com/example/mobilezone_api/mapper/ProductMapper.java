@@ -32,9 +32,12 @@ public interface ProductMapper {
     default List<Long> mapOrderDetail(List<OrderDetail> orderDetails) {
         List<Long> orderDetailIds = new ArrayList<>();
 
-        for (OrderDetail o: orderDetails) {
-            orderDetailIds.add(o.getOrderDetailId());
+        if (orderDetails != null) {
+            for (OrderDetail o: orderDetails) {
+                orderDetailIds.add(o.getOrderDetailId());
+            }
         }
+
         return orderDetailIds;
     }
 

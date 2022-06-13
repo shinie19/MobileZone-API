@@ -39,7 +39,19 @@ public class BrandService {
     @Transactional(readOnly = true)
     public BrandDTO getBrand(Long id) {
         Brand brand = brandRepository.findById(id)
-                .orElseThrow(() -> new BrandNotFoundException("Subreddit not found with id -" + id));
+                .orElseThrow(() -> new BrandNotFoundException("Brand not found with id -" + id));
+
+        return brandMapper.mapBrandToDTO(brand);
+    }
+
+    @Transactional
+    public BrandDTO updateBrand(Long id, BrandDTO brandDTO) {
+        Brand brand = brandRepository.findById(id)
+                .orElseThrow(() -> new BrandNotFoundException("Brand not found with id -" + id));
+
+        if (brandDTO.getBrandName() != null) brand.setBrandName(brandDTO.getBrandName());
+        if (brandDTO.getLogo() != null) brand.setLogo(brandDTO.getLogo());
+        if (brandDTO.getDescription() != null) brand.setDescription(brandDTO.getDescription());
 
         return brandMapper.mapBrandToDTO(brand);
     }

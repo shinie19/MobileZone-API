@@ -29,6 +29,11 @@ public class BrandController {
         return brandService.save(brandDTO);
     }
 
+    @PutMapping("/{id}")
+    public BrandDTO updateBrand(@PathVariable Long id, BrandDTO brandDTO) {
+        return brandService.updateBrand(id, brandDTO);
+    }
+
     @GetMapping("/delete/{id}")
     public void deleteBrand(@PathVariable Long id) {
         brandService.delete(id);
